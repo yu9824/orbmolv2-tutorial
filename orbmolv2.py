@@ -16,6 +16,7 @@
 from array import array
 
 import matplotlib.pyplot as plt
+import pandas as pd
 import torch
 from ase import Atoms
 from ase.optimize import FIRE
@@ -193,3 +194,15 @@ ax.set_xlabel("Number of molecules")
 ax.set_ylabel("Energy per molecule / eV")
 ax.legend()
 fig.tight_layout()
+
+# %%
+df = pd.DataFrame(
+    {
+        "n_molecules": n_molecules_array,
+        "charge_uma1p2": energies_charge_per_mol_uma1p2,
+        "charge_orbmolv2": energies_charge_per_mol_orbmolv2,
+        "spin_uma1p2": energies_spin_per_mol_uma1p2,
+        "spin_orbmolv2": energies_spin_per_mol_orbmolv2,
+    }
+).set_index("n_molecules")
+df
