@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.7
+#       jupytext_version: 1.19.4
 #   kernelspec:
 #     display_name: orbmolv2_312
 #     language: python
@@ -13,10 +13,10 @@
 # ---
 
 # %%
-import io
 from array import array
 
 import matplotlib.pyplot as plt
+import torch
 from ase import Atoms
 from ase.optimize import FIRE
 from ase.visualize import view
@@ -41,10 +41,16 @@ atoms_ammonium.info["spin"] = 1
 view(atoms_ammonium, viewer="ngl")
 
 # %%
-device = "cuda"
+if torch.cuda.is_available():
+    device = "cuda"
+else:
+    device = "cpu"
+print(f"{device=}")
 
 model, atoms_adapter = orbmol_v2(
-    "./checkpoints/orbmol-v2-teqabfhg-20260523.ckpt", device=device
+    "./checkpoints/orbmol-v2-teqabfhg-20260523.ckpt",
+    device=device,
+    compile=False,
 )
 
 # %%
